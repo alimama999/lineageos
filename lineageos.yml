@@ -15,9 +15,9 @@ jobs:
 
       - name: Clone device tree, kernel, vendor
         run: |
-          git clone https://github.com/<你的 device 仓库>.git device/xiaomi/gauguin
-          git clone https://github.com/<你的 kernel>.git kernel/xiaomi/gauguin
-          git clone https://github.com/<你的 vendor>.git vendor/xiaomi/gauguin
+          git clone https://github.com/LineageOS/android_device_xiaomi_gauguin.git device/xiaomi/gauguin
+          git clone https://github.com/LineageOS/android_kernel_xiaomi_gauguin.git kernel/xiaomi/gauguin
+          git clone https://github.com/LineageOS/android_vendor_lineage.git vendor/xiaomi/gauguin
 
       - name: Build ROM
         run: |
