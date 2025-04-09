@@ -1,0 +1,38 @@
+name: Build /e/OS for gauguin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup environment
+        run: |
+          sudo apt update
+          sudo apt install openjdk-8-jdk repo bc curl wget git
+
+      - name: Initialize Repo
+        run: |
+          mkdir -p ~/eos
+          cd ~/eos
+          repo init -u https://gitlab.e.foundation/e/os/android.git -b /e/Android-12.1
+          repo sync -j4
+
+      - name: Clone Device Tree
+        run: |
+          git clone https://github.com/YourGitHubUsername/android_device_xiaomi_gauguin.git device/xiaomi/gauguin
+          git clone https://github.com/YourGitHubUsername/android_kernel_xiaomi_gauguin.git kernel/xiaomi/gauguin
+          git clone https://github.com/YourGitHubUsername/android_vendor_xiaomi_gauguin.git vendor/xiaomi/gauguin
+
+      - name: Build /e/OS ROM
+        run: |
+          cd ~/eos
+          source build/envsetup.sh
+          lunch e_gauguin-userdebug
+          mka bacon
+
+      - name: Upload ROM to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ~/eos/out/target/product/gauguin/*.zip
